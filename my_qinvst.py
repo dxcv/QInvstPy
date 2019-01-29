@@ -12,11 +12,6 @@ from datetime import date
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, TargetPosTask
 
-'''
-如果当前价格大于5分钟K线的MA15则开多仓
-如果小于则平仓
-回测从 2018-05-01 到 2018-10-01
-'''
 # 在创建 api 实例时传入 TqBacktest 就会进入回测模式
 api = TqApi(TqSim(), backtest=TqBacktest(start_dt=date(2018, 5, 1), end_dt=date(2018, 5, 10)))
 # 获得 m1901 5分钟K线的引用
