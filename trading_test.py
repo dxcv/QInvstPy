@@ -4,11 +4,13 @@ import datetime as dt
 import numpy as np
 import pandas as pd
 
-from tqsdk import TqApi, TqSim
+from tqsdk import TqApi, TqSim, TqAccount
 from contextlib import closing
 
 # 创建API实例，需要指定交易帐号，or"SIM"
+# api = TqApi(TqAccount('G光大期货', '30500071', 'Gd123456'))
 api = TqApi("SIM", "ws://10.88.27.135:7777")
+
 quote = api.get_quote("SHFE.cu1903")
 # "datetime": "",  # "2017-07-26 23:04:21.000001" (行情从交易所发出的时间(北京时间))
 # "ask_price1": float("nan"),  # 6122.0 (卖一价)
@@ -42,6 +44,11 @@ quote = api.get_quote("SHFE.cu1903")
 # "change": float("nan"),  # −20.0 (涨跌)
 # "change_percent": float("nan"),  # −0.00325 (涨跌幅)
 # "expired": False,  # False (合约是否已下市)
+
+while True:
+    api.wait_update()
+    print(quote['last_price'])
+
 data_length = 300
 kline = api.get_kline_serial("SHFE.cu1903", duration_seconds=5,
                              data_length=min(8964, data_length))
@@ -56,8 +63,29 @@ kline = api.get_kline_serial("SHFE.cu1903", duration_seconds=5,
 
 while True:
     api.wait_update()
-    # print(kline.close[-10:])
+    print(kline.close[-10:])
     print(kline.datetime[-5:])
+
+data_length = 200
+serial = api.get_tick_serial("SHFE.cu1903",
+                             data_length=min(8964, data_length))
+# "datetime": 0,  # 1501074872000000000 (tick从交易所发出的时间(按北京时间)，自unix epoch(1970-01-01 00:00:00 GMT)以来的纳秒数)
+# "last_price": float("nan"),  # 3887.0 (最新价)
+# "average": float("nan"),  # 3820.0 (当日均价)
+# "highest": float("nan"),  # 3897.0 (当日最高价)
+# "lowest": float("nan"),  # 3806.0 (当日最低价)
+# "ask_price1": float("nan"),  # 3886.0 (卖一价)
+# "ask_volume1": 0,  # 3 (卖一量)
+# "bid_price1": float("nan"),  # 3881.0 (买一价)
+# "bid_volume1": 0,  # 18 (买一量)
+# "volume": 0,  # 7823 (当日成交量)
+# "amount": float("nan"),  # 19237841.0 (成交额)
+# "open_interest": 0,  # 1941 (持仓量)
+
+while True:
+    api.wait_update()
+    print(serial[-1]["bid_price1"], serial[-1]["ask_price1"])
+
 
 
 account = api.get_account()
@@ -86,3 +114,4 @@ with closing(api):
         if api.is_changing(account):
             print('available:', account['available'])
             print('protf:', account['float_profit'])
+
