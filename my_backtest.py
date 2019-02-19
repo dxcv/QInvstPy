@@ -11,6 +11,8 @@ import datetime as dt
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
+from asset_selection import my_asset_selection
+
 pd.set_option('display.max_rows', None)  # 设置Pandas显示的行数
 pd.set_option('display.width', None)  # 设置Pandas显示的宽度
 
@@ -19,31 +21,40 @@ what analysis is used
 idea from XXX paper
 '''
 
+"""
+select asset
+select_symbol: according to the most traded/OI contract
+select_time_interval: 5min 15min 1d
+based on the trading break: 10:15-10:29, hard to tune time interval
+
+select_backtest_period
+construct bootstrap backtest
+
+construct tianqinbacktest
+construct tianqin real-time monitoring
+real-time trading
+
+"""
+
+# 确定交易品种和合约
+ls_assets = my_asset_selection()
+ls_assets = ['rb']
+
+ls_symbols = ['SHFE.rb1901', 'SHFE.ru1811']
+
 symbol = "SHFE.ru1811"  # 交易合约代码
-close_hour, close_minute = 14, 50  # 预定收盘时间(因为真实收盘后无法进行交易, 所以提前设定收盘时间)
+
+# TODO: 交易规则 不同品种不一样。。
+close_hour, close_minute = 14, 54  # 预定收盘时间(因为真实收盘后无法进行交易, 所以提前设定收盘时间)
+close_hour, close_minute = 10, 14
+close_hour, close_minute = 23, 0
+close_hour, close_minute = 23, 30
+duration_seconds = 5 * 60
+duration_seconds = 15 * 60
 
 
-def get_prediction_data(klines, n):
-    df_klines = klines.to_dataframe()  # 将k线数据转为DataFrame
-    close_prices = df_klines.close[- 30 - n:]  # 获取本交易日及以前的收盘价(此时在预定的收盘时间: 认为本交易日已收盘)
-    # 计算所需指标
-    sma_data = talib.SMA(close_prices, timeperiod=30)[-n:]  # SMA指标, 函数默认时间周期参数:30
-    wma_data = talib.WMA(close_prices, timeperiod=30)[-n:]  # WMA指标
-    mom_data = talib.MOM(close_prices, timeperiod=30)[-n:]  # MOM指标
-    x_all = list(zip(sma_data, wma_data, mom_data))  # 样本特征组
-    y_all = list(klines[i]["close"] >= klines[i - 1]["close"] for i in list(reversed(range(-1, -n - 1, -1))))  # 样本标签组
-    # x_all:            大前天指标 前天指标 昨天指标 (今天指标)
-    # y_all:   (大前天)    前天     昨天    今天      -明天-
-    # 准备算法需要用到的数据
-    x_train = x_all[: -1]  # 训练数据: 特征
-    x_predict = x_all[-1]  # 预测数据(用本交易日的指标预测下一交易日的涨跌)
-    y_train = y_all[1:]  # 训练数据: 标签 (去掉第一个数据后让其与指标隔一位对齐(例如: 昨天的特征 -> 对应预测今天的涨跌标签))
 
-    return x_train, y_train, x_predict
-
-
-predictions = []  # 用于记录每次的预测结果(在每个交易日收盘时用收盘数据预测下一交易日的涨跌,并记录在此列表里)
-api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2018, 7, 2), end_dt=dt.date(2018, 9, 26)))
+api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2018, 7, 2), end_dt=dt.date(2018, 7, 26)))
 quote = api.get_quote(symbol)
 klines = api.get_kline_serial(symbol, duration_seconds=24 * 60 * 60)  # 日线
 target_pos = TargetPosTask(api, symbol)
