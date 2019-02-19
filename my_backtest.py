@@ -49,12 +49,25 @@ close_hour, close_minute = 14, 54  # 预定收盘时间(因为真实收盘后无
 close_hour, close_minute = 10, 14
 close_hour, close_minute = 23, 0
 close_hour, close_minute = 23, 30
+
+# set time interval
 duration_seconds = 5 * 60
 duration_seconds = 15 * 60
 
+# backtest period
+start_date = dt.date(2018, 7, 2)
+end_date = dt.date(2018, 7, 26)
+
+# bootstrap backtest
+# bootstrap()
 
 
-api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2018, 7, 2), end_dt=dt.date(2018, 7, 26)))
+# TqBacktest
+api = TqApi(TqSim(), backtest=TqBacktest(start_dt=start_date, end_dt=end_date))
+
+# Tq Terminal with selected backtest date
+api = TqApi('SIM')
+
 quote = api.get_quote(symbol)
 klines = api.get_kline_serial(symbol, duration_seconds=24 * 60 * 60)  # 日线
 target_pos = TargetPosTask(api, symbol)
