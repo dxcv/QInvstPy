@@ -62,11 +62,11 @@ end_date = dt.date(2018, 7, 26)
 # bootstrap()
 
 
-# TqBacktest
-api = TqApi(TqSim(), backtest=TqBacktest(start_dt=start_date, end_dt=end_date))
+# # TqBacktest
+# api = TqApi(TqSim(), backtest=TqBacktest(start_dt=start_date, end_dt=end_date))
 
 # Tq Terminal with selected backtest date
-api = TqApi('SIM')
+api = TqApi('SIM', backtest=TqBacktest(start_dt=start_date, end_dt=end_date))
 
 quote = api.get_quote(symbol)
 klines = api.get_kline_serial(symbol, duration_seconds=24 * 60 * 60)  # 日线
@@ -102,13 +102,13 @@ with closing(api):
                         break
 
     except BacktestFinished:  # 回测结束, 获取预测结果，统计正确率
-        df_klines = klines.to_dataframe()  # 将K线序列中的数据转换为 pandas.DataFrame
-        df_klines["pre_close"] = df_klines["close"].shift(1)  # 增加 pre_close(上一交易日的收盘价) 字段
-        df_klines = df_klines[-len(predictions) + 1:]  # 取出在回测日期内的K线数据
-        df_klines["prediction"] = predictions[:-1]  # 增加预测的本交易日涨跌情况字段(向后移一个数据目的: 将 本交易日对应下一交易日的涨跌 调整为 本交易日对应本交易日的涨跌)
-        results = (df_klines["close"] - df_klines["pre_close"] >= 0) == df_klines["prediction"]
-
-        print(df_klines)
+        # df_klines = klines.to_dataframe()  # 将K线序列中的数据转换为 pandas.DataFrame
+        # df_klines["pre_close"] = df_klines["close"].shift(1)  # 增加 pre_close(上一交易日的收盘价) 字段
+        # df_klines = df_klines[-len(predictions) + 1:]  # 取出在回测日期内的K线数据
+        # df_klines["prediction"] = predictions[:-1]  # 增加预测的本交易日涨跌情况字段(向后移一个数据目的: 将 本交易日对应下一交易日的涨跌 调整为 本交易日对应本交易日的涨跌)
+        # results = (df_klines["close"] - df_klines["pre_close"] >= 0) == df_klines["prediction"]
+        #
+        # print(df_klines)
         print("----回测结束----")
         print("预测结果正误:\n", results)
         print("预测结果数目统计: 总计", len(results),"个预测结果")
