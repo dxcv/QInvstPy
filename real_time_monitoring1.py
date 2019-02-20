@@ -25,7 +25,9 @@ data_length = long + 2  # k线数据长度
 # "duration_seconds=60"为一分钟线, 日线的duration_seconds参数为: 24*60*60
 symbol = 'SHFE.rb1905'
 
-api = TqApi('SIM')
+# api = TqApi('SIM')
+# home PC
+api = TqApi('SIM', url='ws://192.168.50.1:7777')
 quote = api.get_quote(symbol)
 klines = api.get_kline_serial(symbol, duration_seconds=10, data_length=data_length)
 target_pos = TargetPosTask(api, symbol)
@@ -56,5 +58,5 @@ with closing(api):
         if api.is_changing(account, 'float_profit'):
             print('浮动盈亏：', account['float_profit'])
             print('多头持仓盈亏', symbol, ':', position['position_profit_long'])
-            print('空头持仓盈亏', symbol, ':', position['position_profit_long'])
+            print('空头持仓盈亏', symbol, ':', position['position_profit_short'])
 
