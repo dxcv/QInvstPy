@@ -13,7 +13,7 @@ import talib
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
-from asset_selection import my_asset_selection
+from trading_selection import my_assets_selection
 
 pd.set_option('display.max_rows', None)  # 设置Pandas显示的行数
 pd.set_option('display.width', None)  # 设置Pandas显示的宽度

@@ -86,7 +86,7 @@ with closing(api):
         print(df_klines)
         print("----回测结束----")
         print("预测结果正误:\n", results)
-        print("预测结果数目统计: 总计", len(results),"个预测结果")
+        print("预测结果数目统计: 总计", len(results), "个预测结果")
         print(pd.value_counts(results))
         print("预测的准确率:")
         print((pd.value_counts(results)[True]) / len(results))

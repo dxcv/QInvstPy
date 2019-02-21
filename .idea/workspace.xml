@@ -2,10 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e669ed03-d7d4-4c1c-b45f-b9d4c19b3714" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bootstrap_assessment.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/trading_strategies/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/QInvstPy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/QInvstPy.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_time_monitoring1.py" beforeDir="false" afterPath="$PROJECT_DIR$/real_time_monitoring1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asset_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/trading_selection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/data_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_backtest.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_backtest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_qinvst.py" beforeDir="false" afterPath="$PROJECT_DIR$/tq_demo/my_qinvst.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/real_time_monitoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/live_monitoring/real_time_monitoring.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/real_time_monitoring1.py" beforeDir="false" afterPath="$PROJECT_DIR$/live_monitoring/real_time_monitoring1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/send_wechat.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/send_wechat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tq_demo/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,9 +25,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/asset_selection.py">
+        <entry file="file://$PROJECT_DIR$/trading_selection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="141">
+              <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
               <folding>
                 <element signature="e#1#10#0" expanded="true" />
               </folding>
@@ -27,22 +37,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_backtest.py">
+        <entry file="file://$PROJECT_DIR$/trading_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="17" selection-end-line="17" />
+            <state relative-caret-position="-75">
+              <caret line="28" column="44" lean-forward="true" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
               <folding>
-                <element signature="e#74#83#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/real_time_monitoring.py">
+        <entry file="file://$PROJECT_DIR$/my_backtest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="54" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="462">
+              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
               <folding>
                 <element signature="e#74#83#0" expanded="true" />
               </folding>
@@ -51,10 +61,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/real_time_monitoring1.py">
+        <entry file="file://$PROJECT_DIR$/bootstrap_assessment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="60" column="72" selection-start-line="60" selection-start-column="72" selection-end-line="60" selection-end-column="72" />
+            <state relative-caret-position="150">
+              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+              <folding>
+                <element signature="e#1#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -75,16 +88,21 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/asset_selection.py" />
-        <option value="$PROJECT_DIR$/my_backtest.py" />
         <option value="$PROJECT_DIR$/real_time_monitoring.py" />
         <option value="$PROJECT_DIR$/real_time_monitoring1.py" />
+        <option value="$PROJECT_DIR$/asset_selection.py" />
+        <option value="$PROJECT_DIR$/tradingassets_selection.py" />
+        <option value="$PROJECT_DIR$/assets_selection.py" />
+        <option value="$PROJECT_DIR$/tq_demo/test.py" />
+        <option value="$PROJECT_DIR$/trading_selection.py" />
+        <option value="$PROJECT_DIR$/live_monitoring/real_time_monitoring1.py" />
+        <option value="$PROJECT_DIR$/my_backtest.py" />
+        <option value="$PROJECT_DIR$/live_monitoring/real_time_monitoring.py" />
+        <option value="$PROJECT_DIR$/bootstrap_assessment.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="width" value="840" />
     <option name="height" value="1010" />
   </component>
@@ -112,6 +130,11 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lenovo\Documents\GitHub\QInvstPy\live_monitoring" />
+      <recent name="C:\Users\lenovo\Documents\GitHub\QInvstPy\tq_demo" />
+      <recent name="C:\Users\lenovo\Documents\GitHub\QInvstPy\tools" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\lenovo\Documents\GitHub\QInvstPy" />
     </key>
@@ -141,7 +164,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/real_time_monitoring.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\lenovo\Documents\GitHub\QInvstPy\live_monitoring\real_time_monitoring.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -162,7 +185,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/real_time_monitoring1.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\lenovo\Documents\GitHub\QInvstPy\live_monitoring\real_time_monitoring1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -183,7 +206,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\lenovo\Documents\GitHub\QInvstPy\tq_demo\test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -214,21 +237,22 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1280" height="942" extended-state="6" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15672235" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.112183355" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3293124" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32349324" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3225084" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3990878" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49945354" weight="0.32922733" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32922733" />
-      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49698433" weight="0.32718328" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32839224" />
+      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49698433" visible="true" weight="0.32586786" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030157" side_tool="true" weight="0.32138857" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -241,7 +265,14 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/m_i_1d.csv" />
-    <entry file="file://$PROJECT_DIR$/data_test.py">
+    <entry file="file://$PROJECT_DIR$/tools/send_wechat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="40" selection-start-line="7" selection-start-column="40" selection-end-line="7" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/data_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
@@ -250,19 +281,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_qinvst.py">
+    <entry file="file://$PROJECT_DIR$/tq_demo/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="420">
+          <caret line="90" column="24" lean-forward="true" selection-start-line="90" selection-start-column="24" selection-end-line="90" selection-end-column="24" />
+          <folding>
+            <element signature="e#69#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tq_demo/my_qinvst.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="18" lean-forward="true" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
           <folding>
             <element signature="e#161#186#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/asset_selection.py">
+    <entry file="file://$PROJECT_DIR$/trading_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="-75">
+          <caret line="28" column="44" lean-forward="true" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trading_selection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding>
             <element signature="e#1#10#0" expanded="true" />
           </folding>
@@ -271,48 +323,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/my_backtest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="17" selection-end-line="17" />
+        <state relative-caret-position="462">
+          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
           <folding>
             <element signature="e#74#83#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/real_time_monitoring.py">
+    <entry file="file://$PROJECT_DIR$/live_monitoring/real_time_monitoring.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
+        <state relative-caret-position="285">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#74#83#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/live_monitoring/real_time_monitoring1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
-          <folding>
-            <element signature="e#69#88#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="179">
+          <caret line="12" column="30" lean-forward="true" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trading_test.py">
+    <entry file="file://$PROJECT_DIR$/bootstrap_assessment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+        <state relative-caret-position="150">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#1#19#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/real_time_monitoring1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="60" column="72" selection-start-line="60" selection-start-column="72" selection-end-line="60" selection-end-column="72" />
         </state>
       </provider>
     </entry>

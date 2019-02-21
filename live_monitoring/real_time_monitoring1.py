@@ -13,7 +13,7 @@ import talib
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
-from asset_selection import my_asset_selection
+from trading_selection import my_assets_selection
 
 pd.set_option('display.max_rows', None)  # 设置Pandas显示的行数
 pd.set_option('display.width', None)  # 设置Pandas显示的宽度
@@ -25,9 +25,9 @@ data_length = long + 2  # k线数据长度
 # "duration_seconds=60"为一分钟线, 日线的duration_seconds参数为: 24*60*60
 symbol = 'SHFE.rb1905'
 
-# api = TqApi('SIM')
+api = TqApi('SIM')
 # home PC
-api = TqApi('SIM', url='ws://192.168.50.1:7777')
+# api = TqApi('SIM', url='ws://192.168.50.1:7777')
 quote = api.get_quote(symbol)
 klines = api.get_kline_serial(symbol, duration_seconds=10, data_length=data_length)
 target_pos = TargetPosTask(api, symbol)
