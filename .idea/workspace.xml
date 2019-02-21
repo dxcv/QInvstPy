@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e669ed03-d7d4-4c1c-b45f-b9d4c19b3714" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bootstrap_assessment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/trading_strategies/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/QInvstPy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/QInvstPy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e669ed03-d7d4-4c1c-b45f-b9d4c19b3714" name="Default Changelist" comment="test">
+      <change afterPath="$PROJECT_DIR$/my_TqBacktest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asset_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/trading_selection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/data_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bootstrap_assessment.py" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap_assessment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_backtest.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_backtest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_qinvst.py" beforeDir="false" afterPath="$PROJECT_DIR$/tq_demo/my_qinvst.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_time_monitoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/live_monitoring/real_time_monitoring.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_time_monitoring1.py" beforeDir="false" afterPath="$PROJECT_DIR$/live_monitoring/real_time_monitoring1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/send_wechat.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/send_wechat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tq_demo/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,8 +42,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_backtest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
+            <state relative-caret-position="852">
+              <caret line="72" column="34" lean-forward="true" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="34" />
               <folding>
                 <element signature="e#74#83#0" expanded="true" />
               </folding>
@@ -61,12 +52,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/bootstrap_assessment.py">
+        <entry file="file://$PROJECT_DIR$/my_TqBacktest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+            <state relative-caret-position="345">
+              <caret line="23" column="79" lean-forward="true" selection-start-line="23" selection-start-column="79" selection-end-line="23" selection-end-column="79" />
               <folding>
-                <element signature="e#1#19#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,13 +87,14 @@
         <option value="$PROJECT_DIR$/tq_demo/test.py" />
         <option value="$PROJECT_DIR$/trading_selection.py" />
         <option value="$PROJECT_DIR$/live_monitoring/real_time_monitoring1.py" />
-        <option value="$PROJECT_DIR$/my_backtest.py" />
         <option value="$PROJECT_DIR$/live_monitoring/real_time_monitoring.py" />
         <option value="$PROJECT_DIR$/bootstrap_assessment.py" />
+        <option value="$PROJECT_DIR$/my_backtest.py" />
+        <option value="$PROJECT_DIR$/my_TqBacktest.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="width" value="840" />
     <option name="height" value="1010" />
   </component>
@@ -238,9 +230,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.112183355" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.112183355" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -252,7 +243,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49945354" weight="0.32922733" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32839224" />
-      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49698433" visible="true" weight="0.32586786" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="9" sideWeight="0.49698433" visible="true" weight="0.32586786" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030157" side_tool="true" weight="0.32138857" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -311,26 +302,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trading_selection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
-          <folding>
-            <element signature="e#1#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/my_backtest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
-          <folding>
-            <element signature="e#74#83#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/live_monitoring/real_time_monitoring.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -348,12 +319,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/trading_selection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bootstrap_assessment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+        <state relative-caret-position="165">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#1#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_backtest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="852">
+          <caret line="72" column="34" lean-forward="true" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="34" />
+          <folding>
+            <element signature="e#74#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_TqBacktest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="79" lean-forward="true" selection-start-line="23" selection-start-column="79" selection-end-line="23" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
