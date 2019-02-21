@@ -64,6 +64,7 @@ close_hour_night, close_minute_night = 22, 56
 # based on the trading break: 10:15-10:29, hard to adjust time interval
 duration_seconds = 5 * 60
 # duration_seconds = 15 * 60
+duration_seconds = 24*60*60
 
 # backtest period
 start_date = dt.date(2018, 7, 2)
@@ -73,6 +74,7 @@ end_date = dt.date(2018, 7, 26)
 bootstrap = bootstrap_assessment()
 
 # TqBacktest
+symbol = 'SHFE.rb1810'
 TianqinBacktesing()
 
 # Construct live_monitoring
