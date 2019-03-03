@@ -85,9 +85,9 @@ if __name__ == '__main__':
     symbol = 'SHFE.rb1905'
     duration_seconds = 10
     # api = TqApi('SIM', url='ws://192.168.1.6:7777', backtest=TqBacktest(start_dt=dt.date(2019,2,13), end_dt=dt.date(2019,2,14)))
-    api = TqApi('SIM', backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 14)))
+    api = TqApi('SIM')#, backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 14)))
     quote = api.get_quote(symbol)
-    klines = api.get_kline_serial(symbol, duration_seconds=duration_seconds)  # 日线
+    klines = api.get_kline_serial(symbol, duration_seconds=duration_seconds)  #
     target_pos = TargetPosTask(api, symbol)
 
     with closing(api):
@@ -95,12 +95,18 @@ if __name__ == '__main__':
             while True:
                 api.wait_update()
                 if api.is_changing(klines):
-                    now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")  # 当前quote的时间
+                    try:
+                        now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")  # 当前quote的时间
+                    except:
+                        now = 'No data'
                     print(now)
-                    if SMA(klines.close[-50], 20) == 1:  # 如果预测结果为涨: 买入
+                    ys = pd.Series(data=klines.close[-50:],
+                                   index=[dt.datetime.fromtimestamp(i/1e9) for i in klines.datetime[-50:]]
+                                   )
+                    if SMA(ys, 20) == 1:  # 如果预测结果为涨: 买入
                         print(quote["datetime"], "预测下一交易日为 涨")
                         target_pos.set_target_volume(1)
-                    elif SMA(klines.close[-50], 20) == -1:
+                    elif SMA(ys, 20) == -1:
                         print(quote["datetime"], "预测下一交易日为 跌")
                         target_pos.set_target_volume(-1)
                     else:
