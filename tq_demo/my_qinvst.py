@@ -4,9 +4,6 @@ Created on Mon Jan 28 14:06:53 2019
 
 @author: chen zhang
 """
-#!/usr/bin/env python
-#  -*- coding: utf-8 -*-
-__author__ = 'chengzhi'
 
 from datetime import date
 from contextlib import closing
