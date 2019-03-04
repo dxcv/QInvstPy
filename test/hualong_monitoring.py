@@ -33,8 +33,8 @@ SYMBOL = 'CFFEX.IF1903'
 CLOSE_HOUR, CLOSE_MINUTE = 14, 50
 
 
-# api = TqApi('SIM')
-api = TqApi(TqSim())#, backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
+api = TqApi('SIM')
+# api = TqApi(TqSim())#, backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
 logger = logging.getLogger('HUALONG')
 logger.info('实时监测开始')
 

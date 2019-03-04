@@ -31,16 +31,16 @@ from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 SYMBOL = 'CFFEX.IF1903'
 # CLOSE_HOUR, CLOSE_MINUTE = 14, 50
 
-api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
-# api = TqApi('SIM')
+# api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
+api = TqApi('SIM')
 # logger = logging.getLogger('HUALONG')
 # logger.info('实时监测开始')
 
-klines = api.get_kline_serial(SYMBOL, duration_seconds=5*60)
+klines = api.get_kline_serial(SYMBOL, duration_seconds=60)
 quote = api.get_quote(SYMBOL)
 position = api.get_position(SYMBOL)
-target_pos = TargetPosTask(api, SYMBOL)
-target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
+# target_pos = TargetPosTask(api, SYMBOL)
+# target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
 
 
 def get_wave(klines, method='RW', **kwargs):
@@ -108,46 +108,46 @@ def get_wave(klines, method='RW', **kwargs):
     return ys, pricet, MA, h_up, h_down, Wave_up, Wave_down, ls_up, ls_down
 
 
-try:
-    while True:
-        api.wait_update()
-        # 判断最后一根K线的时间是否有变化，如果发生变化则表示新产生了一根K线
-        if api.is_changing(klines[-1], "datetime"):
-            print("新K线", dt.datetime.fromtimestamp(klines[-1]["datetime"]/1e9))
-            ys, pricet, MA, h_up, h_down, Wave_up, Wave_down, ls_up, ls_down = \
-                get_wave(klines, method='RW', w=2, iteration=0)
-            # print(pricet)
-            # print(ys)
-            # print('last kline close price:', klines.close[-1])
+# try:
+while True:
+    api.wait_update()
+    # 判断最后一根K线的时间是否有变化，如果发生变化则表示新产生了一根K线
+    if api.is_changing(klines[-1], "datetime"):
+        print("新K线", dt.datetime.fromtimestamp(klines[-1]["datetime"]/1e9))
+        ys, pricet, MA, h_up, h_down, Wave_up, Wave_down, ls_up, ls_down = \
+            get_wave(klines, method='RW', w=2, iteration=0)
+        # print(pricet)
+        # print(ys)
+        # print('last kline close price:', klines.close[-1])
 
-            # 上升浪一
-            if Wave_up[0] < pricet < Wave_up[1] and \
-                MA.loc[ls_up][0] > Wave_up[0] and MA.loc[ls_up][1] < Wave_up[1] and \
-                    pricet - MA[-1] < 0.02:
-                print('-'*200)
-                print('up')
-                print('price target: ', pricet+h_up)
-                print('stop loss: ', Wave_up[0])
-                print('-' * 200)
-                target_pos.set_target_volume(1)
+        # 上升浪一
+        if Wave_up[0] < pricet < Wave_up[1] and \
+            MA.loc[ls_up][0] > Wave_up[0] and MA.loc[ls_up][1] < Wave_up[1] and \
+                pricet - MA[-1] < 0.02:
+            print('-'*200)
+            print('up')
+            print('price target: ', pricet+h_up)
+            print('stop loss: ', Wave_up[0])
+            print('-' * 200)
+            # target_pos.set_target_volume(1)
 
-            # 下降浪一
-            if Wave_down[0] > pricet > Wave_down[1] and \
-                MA.loc[ls_down[0]] < Wave_down[0] and MA.loc[ls_down][1] > Wave_down[1] and \
-                    MA[-1] - pricet < 0.02:
-                print('price target: ', pricet-h_down)
-                print('stop loss: ', Wave_down[0])
-                target_pos.set_target_volume(-1)
+        # 下降浪一
+        if Wave_down[0] > pricet > Wave_down[1] and \
+            MA.loc[ls_down[0]] < Wave_down[0] and MA.loc[ls_down][1] > Wave_down[1] and \
+                MA[-1] - pricet < 0.02:
+            print('price target: ', pricet-h_down)
+            print('stop loss: ', Wave_down[0])
+                # target_pos.set_target_volume(-1)
 
-        if api.is_changing(quote, "datetime"):
-            print('last price:', quote['last_price'])
-            print('time:', quote['datetime'])
-            if (quote['last_price'] >= pricet+h_up) or (quote['last_price'] < Wave_up[0]) or \
-                    (quote['last_price'] <= pricet - h_down) or (quote['last_price'] > Wave_down[0]):
-                target_pos.set_target_volume(0)
+        # if api.is_changing(quote, "datetime"):
+        #     print('last price:', quote['last_price'])
+        #     print('time:', quote['datetime'])
+        #     if (quote['last_price'] >= pricet+h_up) or (quote['last_price'] < Wave_up[0]) or \
+        #             (quote['last_price'] <= pricet - h_down) or (quote['last_price'] > Wave_down[0]):
+        #         target_pos.set_target_volume(0)
 
 
-except BacktestFinished:  # 回测结束
-    print("----回测结束----")
+# except BacktestFinished:  # 回测结束
+#     print("----回测结束----")
 
 api.close()
