@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 __author__ = 'chen zhang'
 
@@ -8,34 +7,29 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 
-import talib
-
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
-from trading_selection import my_assets_selection
+from trading_strategies.technical_indicators import MACD_adj
 
-pd.set_option('display.max_rows', None)  # 设置Pandas显示的行数
-pd.set_option('display.width', None)  # 设置Pandas显示的宽度
 
-short = 30  # 短周期
-long = 60  # 长周期
 
-data_length = long + 2  # k线数据长度
-# "duration_seconds=60"为一分钟线, 日线的duration_seconds参数为: 24*60*60
-symbol = 'SHFE.rb1905'
+SYMBOL = 'SHFE.rb1905'
+CLOSE_HOUR, CLOSE_MINUTE = 14, 50  # 平仓时间
 
-api = TqApi('SIM')
-# home PC
-# api = TqApi('SIM', url='ws://192.168.50.1:7777')
-quote = api.get_quote(symbol)
-klines = api.get_kline_serial(symbol, duration_seconds=10, data_length=data_length)
-target_pos = TargetPosTask(api, symbol)
+api = TqApi(TqSim())
+quote = api.get_quote(SYMBOL)
+klines = api.get_kline_serial(SYMBOL, duration_seconds=60)
+position = api.get_position(SYMBOL)
+target_pos = TargetPosTask(api, SYMBOL)
+target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
+open_position_price = position["open_price_long"] if target_pos_value > 0 else position["open_price_short"]  # 开仓价
+
 account = api.get_account()
-position = api.get_position(symbol)
 
 with closing(api):
     while True:
+        target_pos.set_target_volume(target_pos_value)
         api.wait_update()
         if api.is_changing(klines[-1], 'datetime'):
             # 等待新的K线生成
@@ -43,20 +37,24 @@ with closing(api):
             now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")
             print(now)
 
-            short_avg = talib.SMA(np.array(klines.close), timeperiod=short)  # 短周期
-            long_avg = talib.SMA(np.array(klines.close), timeperiod=long)  # 长周期
+            ys = pd.Series(data=klines.close[-40:],
+                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-40:]]
+                           )
+            # print(ys)
+            dict_results = MACD_adj(ys)
 
-            # 均线下穿，做空
-            if long_avg[-2] < short_avg[-2] and long_avg[-1] > short_avg[-1]:
-                target_pos.set_target_volume(-3)
-                print("均线下穿，做空")
-            # 均线上穿，做多
-            if short_avg[-2] < long_avg[-2] and short_avg[-1] > long_avg[-1]:
-                target_pos.set_target_volume(3)
-                print("均线上穿，做多")
+            # 上涨阶段金叉 做多
+            if dict_results['signal'] == 1:
+                target_pos.set_target_volume(-1)
+                print("上涨阶段金叉 做多")
+            # 下跌阶段死叉，做空
+            if dict_results['signal'] == -1:
+                target_pos.set_target_volume(1)
+                print("下跌阶段死叉，做空")
 
         if api.is_changing(account, 'float_profit'):
             print('浮动盈亏：', account['float_profit'])
-            print('多头持仓盈亏', symbol, ':', position['position_profit_long'])
-            print('空头持仓盈亏', symbol, ':', position['position_profit_short'])
+            if account['float_profit'] > 200:
+                target_pos.set_target_volume(0)
+
 

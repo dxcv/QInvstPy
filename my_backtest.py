@@ -58,8 +58,15 @@ duration_seconds = 5 * 60
 start_date = dt.date(2018, 7, 2)
 end_date = dt.date(2018, 7, 26)
 
-my_strategy1 = my_strategy()
 
+######################################################################
+# 策略编写与导入
+######################################################################
+my_strategy1 = my_strategy()
+'''
+what analysis is used 
+idea from XXX paper
+'''
 
 ######################################################################
 # bootstrap assessment回测
@@ -73,34 +80,12 @@ bootstrap = bootstrap_assessment(symbol='SHFE.rb1905',
 ######################################################################
 # Tianqin Backtesting回测
 ######################################################################
-# from my_TqBacktest import TianqinBacktesing
-from contextlib import closing
-from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
-
-
-'''
-what analysis is used 
-idea from XXX paper
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
+from my_TqBacktest import TianqinBacktesing
 # TqBacktest
 symbol = 'SHFE.rb1810'
 TianqinBacktesing()
 
 # Construct live_monitoring
-
 
 """
 construct tianqinbacktest
