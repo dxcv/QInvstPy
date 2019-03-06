@@ -14,7 +14,7 @@ from trading_strategies.technical_indicators import MACD_adj
 
 
 
-SYMBOL = 'DCE.jm1905'
+SYMBOL = 'SHFE.rb1905'
 CLOSE_HOUR, CLOSE_MINUTE = 14, 50  # 平仓时间
 
 api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,2,5)))
@@ -54,10 +54,10 @@ with closing(api):
                     target_pos.set_target_volume(1)
                     print("下跌阶段死叉，做空")
 
-            if api.is_changing(account, 'float_profit'):
-                print('浮动盈亏：', account['float_profit'])
-                if account['float_profit'] > 200:
-                    target_pos.set_target_volume(0)
+            # if api.is_changing(quote):
+            #     print('浮动盈亏：', account['float_profit'])
+            #     if account['float_profit'] > 200:
+            #         target_pos.set_target_volume(0)
 
     except BacktestFinished:
         print('回测结束')
