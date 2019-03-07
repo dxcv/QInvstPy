@@ -17,7 +17,7 @@ from trading_strategies.technical_indicators import MACD_adj
 SYMBOL = 'SHFE.rb1905'
 CLOSE_HOUR, CLOSE_MINUTE = 14, 50  # 平仓时间
 
-api = TqApi(TqSim())
+api = TqApi('SIM')
 quote = api.get_quote(SYMBOL)
 klines = api.get_kline_serial(SYMBOL, duration_seconds=60)
 position = api.get_position(SYMBOL)
@@ -42,6 +42,8 @@ with closing(api):
                            )
             # print(ys)
             dict_results = MACD_adj(ys)
+            print('diff', dict_results['MACD'][-1])
+            print('SL', dict_results['SL'][-1])
 
             # 上涨阶段金叉 做多
             if dict_results['signal'] == 1:
@@ -52,9 +54,9 @@ with closing(api):
                 target_pos.set_target_volume(1)
                 print("下跌阶段死叉，做空")
 
-        if api.is_changing(account, 'float_profit'):
-            print('浮动盈亏：', account['float_profit'])
-            if account['float_profit'] > 200:
-                target_pos.set_target_volume(0)
+        # if api.is_changing(account, 'float_profit'):
+        #     print('浮动盈亏：', account['float_profit'])
+        #     if account['float_profit'] > 200:
+        #         target_pos.set_target_volume(0)
 
 
