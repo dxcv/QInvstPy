@@ -175,9 +175,9 @@ if __name__ == '__main__':
     ys = df_ys.loc[:, str_Close]
 
     ys = ys[:300]
-    dict_results = MACD(ys)
-
-    macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
-
-    x = macd - dict_results['MACD']
-    y = dict_results['MACD']
+    # dict_results = MACD(ys)
+    #
+    # macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
+    #
+    # x = macd - dict_results['MACD']
+    # y = dict_results['MACD']

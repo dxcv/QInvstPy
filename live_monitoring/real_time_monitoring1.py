@@ -6,6 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 import datetime as dt
+import time
 
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
@@ -29,6 +30,7 @@ account = api.get_account()
 
 with closing(api):
     while True:
+        print('本机时间：', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         target_pos.set_target_volume(target_pos_value)
         api.wait_update()
         if api.is_changing(klines[-1], 'datetime'):
@@ -47,11 +49,11 @@ with closing(api):
 
             # 上涨阶段金叉 做多
             if dict_results['signal'] == 1:
-                target_pos.set_target_volume(-1)
+                target_pos.set_target_volume(1)
                 print("上涨阶段金叉 做多")
             # 下跌阶段死叉，做空
             if dict_results['signal'] == -1:
-                target_pos.set_target_volume(1)
+                target_pos.set_target_volume(-1)
                 print("下跌阶段死叉，做空")
 
         # if api.is_changing(account, 'float_profit'):
