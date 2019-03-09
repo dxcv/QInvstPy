@@ -25,7 +25,6 @@ klines_1 = api.get_kline_serial(SYMBOL, duration_seconds=60)
 position = api.get_position(SYMBOL)
 target_pos = TargetPosTask(api, SYMBOL)
 target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
-open_position_price = position["open_price_long"] if target_pos_value > 0 else position["open_price_short"]  # 开仓价
 
 account = api.get_account()
 
@@ -47,22 +46,35 @@ with closing(api):
                 # 上涨阶段金叉 做多
                 if dict_results['signal'] == 1:
                     target_pos_value = 2
+                    print('diff', dict_results['MACD'][-1])
+                    print('dea', dict_results['SL'][-1])
                     print("上涨阶段金叉 做多")
                 # 下跌阶段死叉，做空
                 if dict_results['signal'] == -1:
                     target_pos_value = -2
+                    print('diff', dict_results['MACD'][-1])
+                    print('dea', dict_results['SL'][-1])
                     print("下跌阶段死叉，做空")
 
-            if (target_pos_value > 0 and (dict_results['MACD'][-1] - dict_results['SL'][-1]) <
-                    (dict_results['MACD'][-2] - dict_results['SL'][-2])) or \
-                    (target_pos_value < 0 and (dict_results['MACD'][-1] - dict_results['SL'][-1]) >
-                     (dict_results['MACD'][-2] - dict_results['SL'][-2])):
+            if (target_pos_value > 0 and dict_results['HIST'][-2] > 0 and
+                (dict_results['HIST'][-1] < dict_results['HIST'][-2])) or \
+                    (target_pos_value < 0 and dict_results['HIST'][-2] < 0 and
+                     (dict_results['HIST'][-1] > dict_results['HIST'][-2])):
                 target_pos_value = 0
                 print('止损平仓')
 
         if api.is_changing(quote, 'datetime'):
-            # print("最新价: ", quote['datetime'])
+            quote_now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")
+            print('行情最新时间', quote_now)
             if (target_pos_value > 0 and quote["last_price"] - position["open_price_long"] >= 2) or\
                     (target_pos_value < 0 and (position["open_price_short"] - quote["last_price"]) >= 2):
                 target_pos_value = 0
                 print('止盈平仓')
+
+            if target_pos_value > 0:
+                print('多头开仓价', position["open_price_long"])
+                print('最新价', quote['last_price'])
+
+            if target_pos_value < 0:
+                print('空头开仓价', position["open_price_short"])
+                print('最新价', quote['last_price'])

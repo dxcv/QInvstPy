@@ -149,6 +149,11 @@ def MACD_adj(ys, ws=12, wl=26, wsignal=9):
     SL = pd.Series(np.nan, index=ys.index.tolist())
     SL[signalline.index.tolist()] = signalline
 
+    MACD = MACD.apply(lambda x: round(x, 2))
+    SL = SL.apply(lambda x: round(x, 2))
+
+    HIST = MACD - SL
+
     if SL[-1] > 0 and (MACD[-1] > SL[-1] and MACD[-2] < SL[-2]):
         signal = 1
     elif SL[-1] < 0 and (MACD[-1] < SL[-1] and MACD[-2] > SL[-2]):
@@ -159,6 +164,7 @@ def MACD_adj(ys, ws=12, wl=26, wsignal=9):
     dict_results = {
         'MACD': MACD,
         'SL': SL,
+        'HIST': HIST,
         'signal': signal
     }
 
