@@ -171,6 +171,78 @@ def MACD_adj(ys, ws=12, wl=26, wsignal=9):
     return dict_results
 
 
+###############################################################################
+# Relative Strength Index
+###############################################################################
+
+
+def RSI(ys, w=14, ul=70, dl=30):
+    l = len(ys)
+
+    ys_chg_p = (ys.diff(1)).apply(lambda x: max(x, 0))
+    ys_chg_n = (ys.diff(1)).apply(lambda x: np.abs(min(x, 0)))
+
+    RS = pd.Series(data=np.nan, index=ys.index.tolist())
+    RSI = pd.Series(data=np.nan, index=ys.index.tolist())
+    for t in range(w, l):
+        # print(t)
+        if ys_chg_n.iloc[t-w+1:t+1].sum() == 0:
+            RS.iloc[t] = np.nan
+            RSI.iloc[t] = 100
+        else:
+            RS.iloc[t] = ys_chg_p.iloc[t - w + 1:t + 1].sum() / ys_chg_n.iloc[t - w + 1:t + 1].sum()
+            RSI.iloc[t] = 100 - 100 / (1 + RS.iloc[t])
+
+    if RSI[-1] > dl and RSI[-2] < dl:
+        signal = 1
+    elif RSI[-1] < ul and RSI[-2] > ul:
+        signal = -1
+    else:
+        signal = 0
+
+    dict_results = {
+        'RSI': RSI,
+        'signal': signal
+    }
+
+    return dict_results
+
+
+###############################################################################
+# Bollinger Bands
+###############################################################################
+
+
+def BB(ys, w=20, k=2):
+
+    BB_mid = SMA(ys, w)['SMA']
+
+    # diff_square = (ys - BB_mid).apply(np.square)
+    # sigma = (diff_square.rolling(window=w).mean()).apply(np.sqrt)
+
+    sigma = ys.rolling(window=w).apply(np.std)
+
+    BB_up = BB_mid + k * sigma
+    BB_low = BB_mid - k * sigma
+
+    if (ys[-2] > BB_up[-2] and ys[-1] < BB_up[-1]) or \
+            (ys[-2] < BB_low[-2] and ys[-1] < BB_low[-1]):
+        signal = -1
+    elif (ys[-2] < BB_low[-2] and ys[-1] > BB_low[-1]) or \
+            (ys[-2] > BB_up[-2] and ys[-1] > BB_up[-1]):
+        signal = 1
+    else:
+        signal = 0
+
+    dict_results = {
+        'Mid': BB_mid,
+        'Up': BB_up,
+        'Low': BB_low,
+        'signal': signal
+    }
+
+    return dict_results
+
 if __name__ == '__main__':
     df_ys = pd.read_csv('./Data/ru_i_15min.csv')
     df_ys.datetime = df_ys.datetime.apply(pd.to_datetime)
