@@ -7,5 +7,7 @@ import seaborn as sns
 sns.set_style('white')
 
 
-def bootstrap_assessment():
-    return 0
+class BootstrapAssessment:
+
+    def __init__(self):
+        pass

@@ -62,18 +62,57 @@ end_date = dt.date(2018, 7, 26)
 ######################################################################
 # 策略编写与导入
 ######################################################################
-my_strategy1 = my_strategy()
+from my_strategy import MyStrategy
+my_strategy1 = MyStrategy()
 '''
 what analysis is used 
 idea from XXX paper
 '''
 
+x = """
+def BB(ys, w=20, k=2):
+
+    BB_mid = SMA(ys, w)['SMA']
+
+    # diff_square = (ys - BB_mid).apply(np.square)
+    # sigma = (diff_square.rolling(window=w).mean()).apply(np.sqrt)
+
+    sigma = ys.rolling(window=w).apply(np.std)
+
+    BB_up = BB_mid + k * sigma
+    BB_low = BB_mid - k * sigma
+
+    if (ys[-2] > BB_up[-2] and ys[-1] < BB_up[-1]) or \
+            (ys[-2] < BB_low[-2] and ys[-1] < BB_low[-1]):
+        signal = -1
+    elif (ys[-2] < BB_low[-2] and ys[-1] > BB_low[-1]) or \
+            (ys[-2] > BB_up[-2] and ys[-1] > BB_up[-1]):
+        signal = 1
+    else:
+        signal = 0
+
+    dict_results = {
+        'Mid': BB_mid,
+        'Up': BB_up,
+        'Low': BB_low,
+        'signal': signal
+    }
+
+    return dict_results
+"""
+my_strategy1.write_py('BollingerBand', x)
+
+######################################################################
+# ordinary statistical assessment回测
+######################################################################
+
+
 ######################################################################
 # bootstrap assessment回测
 ######################################################################
-from bootstrap_assessment import bootstrap_assessment
+from bootstrap_assessment import BootstrapAssessment
 # bootstrap backtest
-bootstrap = bootstrap_assessment(symbol='SHFE.rb1905',
+bootstrap = BootstrapAssessment(symbol='SHFE.rb1905',
                                  start_dt=start_date, end_dt=end_date,
                                  cc=True, strategy=my_strategy1)
 
