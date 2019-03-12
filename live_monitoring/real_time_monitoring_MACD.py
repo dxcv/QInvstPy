@@ -78,6 +78,7 @@ with closing(api):
         if api.is_changing(quote, 'datetime'):
             quote_now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")
             # print('行情最新时间', quote_now)
+            # TODO: 根据不同合约参数调整止盈价格 很重要！
             if (target_pos_value > 0 and quote["last_price"] - position["open_price_long"] >= 2) or\
                     (target_pos_value < 0 and (position["open_price_short"] - quote["last_price"]) >= 2):
                 target_pos_value = 0
