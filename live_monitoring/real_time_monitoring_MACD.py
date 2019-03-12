@@ -41,7 +41,7 @@ account = api.get_account()
 
 with closing(api):
     while True:
-        print('本机时间：', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+        # print('本机时间：', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         target_pos.set_target_volume(target_pos_value)
         api.wait_update()
         if api.is_changing(klines[-1], 'datetime'):
@@ -77,7 +77,7 @@ with closing(api):
 
         if api.is_changing(quote, 'datetime'):
             quote_now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")
-            print('行情最新时间', quote_now)
+            # print('行情最新时间', quote_now)
             if (target_pos_value > 0 and quote["last_price"] - position["open_price_long"] >= 2) or\
                     (target_pos_value < 0 and (position["open_price_short"] - quote["last_price"]) >= 2):
                 target_pos_value = 0
