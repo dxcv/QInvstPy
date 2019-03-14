@@ -244,7 +244,9 @@ def BB(ys, w=20, k=2):
     return dict_results
 
 if __name__ == '__main__':
-    df_ys = pd.read_csv('./Data/ru_i_15min.csv')
+    import talib
+    # df_ys = pd.read_csv('./Data/ru_i_15min.csv')
+    df_ys = pd.read_csv('./trading_strategies/IF1903_1min.csv')
     df_ys.datetime = df_ys.datetime.apply(pd.to_datetime)
     df_ys.datetime = df_ys.datetime.apply(lambda x: str(x))
     df_ys.set_index('datetime', inplace=True)
@@ -253,9 +255,9 @@ if __name__ == '__main__':
     ys = df_ys.loc[:, str_Close]
 
     ys = ys[:300]
-    # dict_results = MACD(ys)
+    dict_results = MACD_adj(ys)
     #
-    # macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
+    macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
     #
-    # x = macd - dict_results['MACD']
-    # y = dict_results['MACD']
+    x = macd - dict_results['MACD']
+    y = dict_results['MACD']

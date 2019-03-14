@@ -50,9 +50,10 @@ with closing(api):
             k15 = str(dt.datetime.fromtimestamp(klines.datetime[-1] / 1e9))
             print('信号时间', k15)
 
-            ys = pd.Series(data=klines.close[-300:],
-                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-300:]]
+            ys = pd.Series(data=klines.close[-300:-1],
+                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-300:-1]]
                            )
+            # print(ys)
             dict_results = MACD_adj(ys)
             print('diff', dict_results['MACD'][-1])
             print('SL', dict_results['SL'][-1])

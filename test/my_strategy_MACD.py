@@ -37,8 +37,8 @@ with closing(api):
             k15 = str(dt.datetime.fromtimestamp(klines_15.datetime[-1] / 1e9))
             print(k15)
 
-            ys = pd.Series(data=klines_15.close[-40:],
-                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines_15.datetime[-40:]]
+            ys = pd.Series(data=klines_15.close[-200:-1],
+                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines_15.datetime[-200:-1]]
                            )
             dict_results = MACD_adj(ys)
 
@@ -65,7 +65,7 @@ with closing(api):
 
         if api.is_changing(quote, 'datetime'):
             quote_now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")
-            print('行情最新时间', quote_now)
+            # print('行情最新时间', quote_now)
             if (target_pos_value > 0 and quote["last_price"] - position["open_price_long"] >= 2) or\
                     (target_pos_value < 0 and (position["open_price_short"] - quote["last_price"]) >= 2):
                 target_pos_value = 0

@@ -23,7 +23,7 @@ download_tasks = {}
 #                                               csv_file_name="rb_i_2h.csv")
 # 下载从 2019-01-01 到 2019-02-24 的 IF1903 1min数据
 download_tasks["IF1903_1min"] = DataDownloader(api, symbol_list="CFFEX.IF1903", dur_sec=60,
-                                               start_dt=datetime(2019, 1, 1), end_dt=datetime(2019, 2, 24),
+                                               start_dt=datetime(2019, 3, 13), end_dt=datetime(2019, 3, 14),
                                                csv_file_name="IF1903_1min.csv")
 # 使用with closing机制确保下载完成后释放对应的资源
 with closing(api):
