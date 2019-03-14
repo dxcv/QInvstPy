@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_style('white')
 
-from preprocessing import RW
+from trading_strategies.preprocessing import RW
 from preprocessing import TP
 from preprocessing import PIPs
 from preprocessing import PB_plotting

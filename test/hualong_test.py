@@ -16,32 +16,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_style('white')
 
-from preprocessing import RW
-from preprocessing import TP
-from preprocessing import PIPs
-from preprocessing import PB_plotting
+from trading_strategies.preprocessing import RW
+from trading_strategies.preprocessing import TP
+from trading_strategies.preprocessing import PIPs
 
-from technical_indicators import SMA
+from trading_strategies.technical_indicators import SMA
 
 from contextlib import closing
-import logging
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
-
-SYMBOL = 'CFFEX.IF1903'
-# CLOSE_HOUR, CLOSE_MINUTE = 14, 50
+SYMBOL = 'CFFEX.IF1904'
 
 # api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
 api = TqApi('SIM')
-# logger = logging.getLogger('HUALONG')
-# logger.info('实时监测开始')
 
 klines = api.get_kline_serial(SYMBOL, duration_seconds=60)
 quote = api.get_quote(SYMBOL)
-position = api.get_position(SYMBOL)
-# target_pos = TargetPosTask(api, SYMBOL)
-# target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
-
 
 def get_wave(klines, method='RW', **kwargs):
     ys = pd.Series(data=klines.close[-40:],
