@@ -10,13 +10,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-#from matplotlib.dates import DateFormatter, WeekdayLocator, DayLocator, MONDAY,YEARLY
-#from mpl_finance import candlestick_ohlc
-#from matplotlib.pylab import date2num
-
-import seaborn as sns
-sns.set_style('white')
-
 from trading_strategies.preprocessing import RW
 from trading_strategies.preprocessing import TP
 from trading_strategies.preprocessing import PIPs
@@ -26,12 +19,44 @@ from trading_strategies.technical_indicators import SMA
 from contextlib import closing
 from tqsdk import TqApi, TqSim, TqBacktest, BacktestFinished, TargetPosTask
 
+import seaborn as sns
+sns.set_style('white')
+
 SYMBOL = 'CFFEX.IF1904'
-# CLOSE_HOUR, CLOSE_MINUTE = 14, 50
 
 api = TqApi('SIM')
 # api = TqApi(TqSim())#, backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
 
+
+def wave_plotting(ys, Peaks, Bottoms, **kwargs):
+    ls_x = ys.index.tolist()
+    num_x = len(ls_x)
+    ls_time_ix = np.linspace(0, num_x - 1, num_x)
+    ls_p = Peaks.index.tolist()
+    ls_b = Bottoms.index.tolist()
+    ls_peaks_time = [ys.index.get_loc(x) for x in ls_p]
+    ls_bottoms_time = [ys.index.get_loc(x) for x in ls_b]
+
+    # ds_MA = kwargs['MA']
+
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
+    ax.plot(ls_time_ix, ys.values)
+    # ax.plot(ls_time_ix, ds_MA.values)
+    ax.scatter(x=ls_peaks_time, y=Peaks.values, marker='o', color='r', alpha=0.5)
+    ax.scatter(x=ls_bottoms_time, y=Bottoms.values, marker='o', color='g', alpha=0.5)
+
+    # for i in ls_peaks_time:
+    #     ax.text(x=i, y=Peaks.loc[ls_x[i]],
+    #             s=ls_x[i], withdash=True,
+    #             )
+    new_xticklabels = [ls_x[np.int(i)] for i in list(ax.get_xticks()) if i in ls_time_ix]
+    new_xticklabels = [ls_x[0]] + new_xticklabels
+    new_xticklabels.append(ls_x[-1])
+    ax.set_xticklabels(new_xticklabels)
+    for tick in ax.get_xticklabels():
+        tick.set_rotation(15)
+    #        plt.savefig('1.jpg')
+    plt.show()
 
 def get_wave_line(klines, method='RW', **kwargs):
     '''
@@ -48,18 +73,18 @@ def get_wave_line(klines, method='RW', **kwargs):
     l = len(ys)
     if method == 'RW':
         Peaks, Bottoms = RW(ys, w=kwargs['w'], iteration=kwargs['iteration'])
-        # Peaks, Bottoms = RW(ys, w=1, iteration=2)
+        # Peaks, Bottoms = RW(ys, w=3, iteration=0)
     elif method == 'TP':
         Peaks, Bottoms = TP(ys, iteration=kwargs['iteration'])
-    #
-    ls_x = ys.index.tolist()
-    ls_p = Peaks.index.tolist()
-    ls_b = Bottoms.index.tolist()
-    P_idx = [ys.index.get_loc(x) for x in ls_p]
-    B_idx = [ys.index.get_loc(x) for x in ls_b]
 
-    P_idx = pd.Series(index=ls_p, data=[1]*len(ls_p))
-    B_idx = pd.Series(index=ls_b, data=[2]*len(ls_b))
+    ls_ix = ys.index.tolist()
+    ls_ix_peaks = Peaks.index.tolist()
+    ls_ix_bottoms = Bottoms.index.tolist()
+    P_idx_t = [ys.index.get_loc(x) for x in ls_ix_peaks]
+    B_idx_t = [ys.index.get_loc(x) for x in ls_ix_bottoms]
+
+    P_idx = pd.Series(index=ls_ix_peaks, data=[1]*len(ls_ix_peaks))
+    B_idx = pd.Series(index=ls_ix_bottoms, data=[2]*len(ls_ix_bottoms))
     PB_idx = P_idx.append(B_idx)
     PB_idx.sort_index(inplace=True)
     m = len(PB_idx.index)
@@ -103,8 +128,6 @@ def get_wave_line(klines, method='RW', **kwargs):
 
     h_up = Wave_up[1] - Wave_up[0]
     h_down = Wave_down[0] - Wave_down[1]
-    #
-    # # logger.info('计算上升浪第一浪的低点和高点 最新K线的')
 
     return ys, pricet, MA, h_up, h_down, Wave_up, Wave_down, ls_up, ls_down
 
@@ -126,6 +149,8 @@ with closing(api):
             print('最新价：%f' % quote['last_price'])
 
             # 上升浪一
+            if  Y < (Wave_up[1] / Wave_up[0] - 1) < Z:
+
             if Wave_up[0] < pricet < Wave_up[1] and \
                 MA.loc[ls_up][0] > Wave_up[0] and MA.loc[ls_up][1] < Wave_up[1] and \
                 pricet - MA[-1] < 0.02:
