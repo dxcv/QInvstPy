@@ -22,16 +22,20 @@ import seaborn as sns
 sns.set_style('white')
 
 
-SYMBOL = 'CFFEX.IF1904'
+SYMBOL = 'CFFEX.IF1903'
+# SYMBOL = 'CFFEX.IF1904'
 
-# api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 15)))
-api = TqApi('SIM')
+api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019, 1, 14), end_dt=dt.date(2019, 3, 1)))
+# api = TqApi('SIM')
 
 klines = api.get_kline_serial(SYMBOL, duration_seconds=60)
+position = api.get_position(SYMBOL)
 quote = api.get_quote(SYMBOL)
+target_pos = TargetPosTask(api, SYMBOL)
+target_pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
 
 
-def wave(klines, X=20):
+def wave(klines, w=1, X=20):
     ys = pd.Series(data=klines.close[-100:-1],
                    index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
                    )
@@ -40,7 +44,6 @@ def wave(klines, X=20):
     ls_ix_peaks = []
     ls_ix_bottoms = []
 
-    w=5
     for i in range(l-w-1, w-1, -1):
         # print(i)
         if ys.iloc[i] > np.max(ys.iloc[i-w: i]) and \
@@ -86,6 +89,7 @@ def wave(klines, X=20):
     # MA = SMA(ys, w=5)['SMA']
 
     dict_results = {
+        'ys': ys,
         'Up': Wave_up,
         'Down': Wave_down,
         'Peaks': Peaks,
@@ -96,7 +100,8 @@ def wave(klines, X=20):
     return dict_results
 
 
-def wave_rule(ys, dict_results, Y=0.003, Z=0.006):
+def wave_rule(dict_results, Y=0.003, Z=0.006):
+    ys = dict_results['ys']
     Wave_up = dict_results['Up']
     Wave_down = dict_results['Down']
     MA = dict_results['MA']
@@ -104,12 +109,12 @@ def wave_rule(ys, dict_results, Y=0.003, Z=0.006):
     ls_up = Wave_up.index.tolist()
     ls_down = Wave_down.index.tolist()
 
-    price0 = ys[0]
     pricet = ys[-1]
+    stop_loss = np.nan
+    target_price = np.nan
 
     h_up = Wave_up[1] - Wave_up[0]
     h_down = Wave_down[0] - Wave_down[1]
-
 
     if (Y < (Wave_up[1] / Wave_up[0] - 1) < Z) and \
             (MA.loc[ls_up[0]] < MA.loc[ls_up[1]] < MA[-1]) and \
@@ -128,21 +133,52 @@ def wave_rule(ys, dict_results, Y=0.003, Z=0.006):
 
     return signal, stop_loss, target_price
 
-# try:
-while True:
-    api.wait_update()
-    # 判断最后一根K线的时间是否有变化，如果发生变化则表示新产生了一根K线
-    if api.is_changing(klines[-1], "datetime"):
-        print("新K线", dt.datetime.fromtimestamp(klines[-1]["datetime"]/1e9))
-        dict_results = wave(klines, X=20)
 
+with closing(api):
+    try:
+        while True:
+            target_pos.set_target_volume(target_pos_value)
+            api.wait_update()
+            # 判断最后一根K线的时间是否有变化，如果发生变化则表示新产生了一根K线
+            if api.is_changing(klines[-1], "datetime"):
+                # 注意引用k线的时间是k线的起始时间
+                k_time = dt.datetime.fromtimestamp(klines[-2]["datetime"]/1e9)
+                dict_results = wave(klines, w=3, X=5)
+                signal, stop_loss, target_price = wave_rule(dict_results)
 
-        pos = 0
-        if pos == 0:
-            signal, stop_loss, target_price = wave_rule(dict_results, Y, Z)
-            pos += signal
-            if signal != 0:
-                print('price target: ', target_price)
-                print('stop loss: ', stop_loss)
+            if api.is_changing(quote, 'last_price'):
 
-api.close()
+                if target_pos_value == 0:
+                    if signal == 1:
+                        target_pos_value = 1
+                        print('开仓多头')
+                        print("判断信号K线时间", k_time)
+                        print('price target: ', target_price)
+                        p_up = target_price
+                        print('stop loss: ', stop_loss)
+                        l_up = stop_loss
+                    elif signal == -1:
+                        target_pos_value = -1
+                        print('开仓空头')
+                        print("判断信号K线时间", k_time)
+                        print('price target: ', target_price)
+                        p_down = target_price
+                        print('stop loss: ', stop_loss)
+                        l_down = stop_loss
+                    else:
+                        target_pos_value = 0
+
+                if target_pos_value > 0:
+                    if quote['last_price'] >= p_up or quote['last_price'] < l_up:
+                        target_pos_value = 0
+                        print('多头止盈或止损')
+                        # print("判断信号K线时间", k_time)
+
+                elif target_pos_value < 0:
+                    if quote['last_price'] <= p_down or quote['last_price'] > l_down:
+                        target_pos_value = 0
+                        print('空头止盈或止损')
+                        # print("判断信号K线时间", k_time)
+
+    except BacktestFinished:
+        print('----回测结束----')

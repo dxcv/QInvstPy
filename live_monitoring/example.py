@@ -27,12 +27,13 @@ symbol = 'SHFE.rb1905'
 
 api = TqApi('SIM')
 quote = api.get_quote()
+position = api.get_position(SYMBOL)
 klines = api.get_kline_serial(symbol, duration_seconds=5*60, data_length=data_length)
 target_pos = TargetPosTask(api, symbol)
 
 with closing(api):
     while True:
-        print('开始等待')
+        target_pos.set_target_volume(target_pos_value)
         api.wait_update()
         if api.is_changing(klines[-1], 'datetime'):
             # 等待新的K线生成
