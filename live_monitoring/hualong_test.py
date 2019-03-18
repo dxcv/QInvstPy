@@ -153,6 +153,7 @@ with closing(api):
                         target_pos_value = 1
                         print('开仓多头')
                         print("判断信号K线时间", k_time)
+                        print(dict_results['Up'])
                         print('price target: ', target_price)
                         p_up = target_price
                         print('stop loss: ', stop_loss)
@@ -161,6 +162,7 @@ with closing(api):
                         target_pos_value = -1
                         print('开仓空头')
                         print("判断信号K线时间", k_time)
+                        print(dict_results['Down'])
                         print('price target: ', target_price)
                         p_down = target_price
                         print('stop loss: ', stop_loss)
