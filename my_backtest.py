@@ -105,7 +105,7 @@ my_strategy1.write_py('BollingerBand', x)
 ######################################################################
 # ordinary statistical assessment回测
 ######################################################################
-
+ordinary_statistical_assessment()
 
 ######################################################################
 # bootstrap assessment回测
