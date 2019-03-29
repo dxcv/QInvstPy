@@ -25,13 +25,17 @@ def SMA(ys, w=5):
     :return
     """
     MA = ys.rolling(window=w).apply(np.mean)
-
-    if ys[-1] > MA[-1] and ys[-2] < MA[-2]:
-        signal = 1
-    elif ys[-1] < MA[-1] and ys[-2] > MA[-2]:
-        signal = -1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(w, len(ls_ix)-1):
+        if ys.iloc[i] < MA.iloc[i] and ys.iloc[i+1] > MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = 1
+        elif ys.iloc[i] > MA.iloc[i] and ys.iloc[i+1] < MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'SMA': MA,
@@ -48,13 +52,17 @@ def LWMA(ys, w=5):
     :return
     """
     MA = ys.rolling(window=w).apply(lambda x: np.average(x, weights=np.arange(w, 0, -1)))
-
-    if ys[-1] > MA[-1] and ys[-2] < MA[-2]:
-        signal = 1
-    elif ys[-1] < MA[-1] and ys[-2] > MA[-2]:
-        signal = -1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(w, len(ls_ix)-1):
+        if ys.iloc[i] < MA.iloc[i] and ys.iloc[i+1] > MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = 1
+        elif ys.iloc[i] > MA.iloc[i] and ys.iloc[i+1] < MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'LWMA': MA,
@@ -71,12 +79,16 @@ def EWMA(ys, w=5):
     for i in range(w, len(ys)):
         MA[i] = exponential * ys[i] + (1 - exponential) * MA[i - 1]
 
-    if ys[-1] > MA[-1] and ys[-2] < MA[-2]:
-        signal = 1
-    elif ys[-1] < MA[-1] and ys[-2] > MA[-2]:
-        signal = -1
-    else:
-        signal = 0
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(w, len(ls_ix)-1):
+        if ys.iloc[i] < MA.iloc[i] and ys.iloc[i+1] > MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = 1
+        elif ys.iloc[i] > MA.iloc[i] and ys.iloc[i+1] < MA.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'EWMA': MA,
@@ -97,13 +109,17 @@ def MAC(ys, ws, wl, method='SMA'):
         MAl = SMA(ys, wl)['SMA']
 
     MAC = MAs - MAl
-
-    if MAC[-1] > 0 and MAC[-2] < 0:
-        signal = 1
-    elif MAC[-1] < 0 and MAC[-2] > 0:
-        signal = -1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(wl, len(ls_ix)-1):
+        if MAC.iloc[i] < 0 < MAC.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = 1
+        elif MAC.iloc[i+1] < 0 < MAC.iloc[i]:
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'MAC': MAC,
@@ -124,13 +140,17 @@ def MACD(ys, ws=12, wl=26, wsignal=9):
     signalline = EWMA(y, wsignal)['EWMA']
     SL = pd.Series(np.nan, index=ys.index.tolist())
     SL[signalline.index.tolist()] = signalline
-
-    if MACD[-1] > SL[-1] and MACD[-2] < SL[-2]:
-        signal = 1
-    elif MACD[-1] < SL[-1] and MACD[-2] > SL[-2]:
-        signal = -1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(wl, len(ls_ix)-1):
+        if MACD.iloc[i] < SL.iloc[i] and MACD.iloc[i+1] > SL.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = 1
+        elif MACD.iloc[i] > SL.iloc[i] and MACD.iloc[i+1] < SL.iloc[i+1]:
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'MACD': MACD,
@@ -148,23 +168,23 @@ def MACD_adj(ys, ws=12, wl=26, wsignal=9):
     signalline = EWMA(y, wsignal)['EWMA']
     SL = pd.Series(np.nan, index=ys.index.tolist())
     SL[signalline.index.tolist()] = signalline
-
-    MACD = MACD.apply(lambda x: round(x, 2))
-    SL = SL.apply(lambda x: round(x, 2))
-
-    HIST = MACD - SL
-
-    if SL[-1] > 0 and (MACD[-1] > SL[-1] and MACD[-2] < SL[-2]):
-        signal = 1
-    elif SL[-1] < 0 and (MACD[-1] < SL[-1] and MACD[-2] > SL[-2]):
-        signal = -1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(wl, len(ls_ix)-1):
+        if SL.iloc[i+1] > 0 and \
+                (MACD.iloc[i] < SL.iloc[i] and MACD.iloc[i+1] > SL.iloc[i+1]):
+            signal.loc[ls_ix[i+1]] = 1
+        elif SL.iloc[i+1] < 0 and \
+                (MACD.iloc[i] > SL.iloc[i] and MACD.iloc[i+1] < SL.iloc[i+1]):
+            signal.loc[ls_ix[i+1]] = -1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'MACD': MACD,
         'SL': SL,
-        'HIST': HIST,
         'signal': signal
     }
 
@@ -178,6 +198,7 @@ def MACD_adj(ys, ws=12, wl=26, wsignal=9):
 
 def RSI(ys, w=14, ul=70, dl=30):
     l = len(ys)
+    ls_ix = ys.index.tolist()
 
     ys_chg_p = (ys.diff(1)).apply(lambda x: max(x, 0))
     ys_chg_n = (ys.diff(1)).apply(lambda x: np.abs(min(x, 0)))
@@ -193,12 +214,15 @@ def RSI(ys, w=14, ul=70, dl=30):
             RS.iloc[t] = ys_chg_p.iloc[t - w + 1:t + 1].sum() / ys_chg_n.iloc[t - w + 1:t + 1].sum()
             RSI.iloc[t] = 100 - 100 / (1 + RS.iloc[t])
 
-    if RSI[-1] > dl and RSI[-2] < dl:
-        signal = 1
-    elif RSI[-1] < ul and RSI[-2] > ul:
-        signal = -1
-    else:
-        signal = 0
+    signal = pd.Series(data=np.nan, index=ls_ix)
+
+    for i in range(w, l-1):
+        if RSI[i] < dl < RSI[i+1]:
+            signal[i+1] = 1
+        elif RSI[i+1] < ul < RSI[i]:
+            signal[i+1] = -1
+        else:
+            signal[i+1] = 0
 
     dict_results = {
         'RSI': RSI,
@@ -224,15 +248,18 @@ def BB(ys, w=20, k=2):
 
     BB_up = BB_mid + k * sigma
     BB_low = BB_mid - k * sigma
-
-    if (ys[-2] > BB_up[-2] and ys[-1] < BB_up[-1]) or \
-            (ys[-2] < BB_low[-2] and ys[-1] < BB_low[-1]):
-        signal = -1
-    elif (ys[-2] < BB_low[-2] and ys[-1] > BB_low[-1]) or \
-            (ys[-2] > BB_up[-2] and ys[-1] > BB_up[-1]):
-        signal = 1
-    else:
-        signal = 0
+    
+    ls_ix = ys.index.tolist()
+    
+    signal = pd.Series(data=np.nan, index=ls_ix)
+    
+    for i in range(w-1, len(ls_ix)-1):
+        if ys.iloc[i] > BB_up.loc[ls_ix[i]] and ys.iloc[i+1] < BB_up.loc[ls_ix[i+1]]:
+            signal.loc[ls_ix[i+1]] = -1
+        elif ys.iloc[i] < BB_low.loc[ls_ix[i]] and ys.iloc[i+1] > BB_low.loc[ls_ix[i+1]]:
+            signal.loc[ls_ix[i+1]] = 1
+        else:
+            signal.loc[ls_ix[i+1]] = 0
 
     dict_results = {
         'Mid': BB_mid,
@@ -243,10 +270,11 @@ def BB(ys, w=20, k=2):
 
     return dict_results
 
+
 if __name__ == '__main__':
     import talib
-    # df_ys = pd.read_csv('./Data/ru_i_15min.csv')
-    df_ys = pd.read_csv('./trading_strategies/IF1903_1min.csv')
+    df_ys = pd.read_csv('./Data/ru_i_15min.csv')
+    df_ys = pd.read_csv('./Data/IF1903_1min.csv')
     df_ys.datetime = df_ys.datetime.apply(pd.to_datetime)
     df_ys.datetime = df_ys.datetime.apply(lambda x: str(x))
     df_ys.set_index('datetime', inplace=True)
@@ -254,10 +282,15 @@ if __name__ == '__main__':
     str_Close = [i for i in ls_cols if i[-6:] == '.close'][0]
     ys = df_ys.loc[:, str_Close]
 
-    ys = ys[:300]
-    dict_results = MACD_adj(ys)
+    ys = ys[-300:]
     #
-    macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
-    #
-    x = macd - dict_results['MACD']
-    y = dict_results['MACD']
+    # results = MACD(ys)
+    # macd, macdsignal, macdhist = talib.MACD(ys, fastperiod=12, slowperiod=26, signalperiod=9)
+    # x = macd - results['MACD']
+    # y = results['MACD']
+    # y.plot()
+
+    ta_RSI = talib.RSI(ys, 14)
+    my = RSI(ys)['RSI']
+
+    upperband, middleband, lowerband = talib.BBANDS(ys, 20)
