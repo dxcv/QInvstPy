@@ -14,20 +14,6 @@ from tqsdk import TqApi, TargetPosTask, TqSim, TqBacktest, BacktestFinished
 
 # 网格计划参数:
 symbol = "DCE.jd1901"  # 合约代码
-start_price = 4047  # 起始价位
-grid_amount = 10  # 网格在多头、空头方向的格子(档位)数量
-grid_region_long = [0.005] * grid_amount  # 多头每格价格跌幅(网格密度)
-grid_region_short = [0.005] * grid_amount  # 空头每格价格涨幅(网格密度)
-grid_volume_long = [1] * grid_amount  # 多头每格交易手数
-grid_volume_short = [-1] * grid_amount  # 空头每格交易手数
-grid_prices_long = [reduce(lambda p, r: p*(1-r), grid_region_long[:i], start_price) for i in range(grid_amount + 1)]  # 多头每格的触发价位列表, 第一个元素为起始价位
-grid_prices_short = [reduce(lambda p, r: p*(1+r), grid_region_short[:i], start_price) for i in range(grid_amount + 1)]  # 空头每格的触发价位列表, 第一个元素为起始价位
-
-print("起始价位:", start_price)
-print("多头每格交易量:", grid_volume_long)
-print("多头每格的价位:", grid_prices_long)
-print("空头每格的价位:", grid_prices_short)
-
 # api = TqApi(TqSim())
 api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,3,20)))
 
