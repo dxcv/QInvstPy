@@ -29,7 +29,7 @@ async def signal_generator(SYMBOL):
             target_pos_value = 0
             pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
             k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=14, seconds=59))
-            # print('信号时间', k15)
+            print('信号时间', k15)
 
             ys = pd.Series(data=klines.close[-100:-1],
                            index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
