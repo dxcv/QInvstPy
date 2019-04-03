@@ -47,7 +47,7 @@ async def signal_generator(SYMBOL):
             ys = pd.Series(data=klines.close[-100:-1],
                            index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
                            )
-            print(SYMBOL, '信号时间', k15)
+            print(SYMBOL, k15)
     await update_kline_chan.close()
 
 

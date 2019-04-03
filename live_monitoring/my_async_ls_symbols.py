@@ -16,10 +16,10 @@ from tqsdk import TqApi, TqSim, TqAccount, TqBacktest, BacktestFinished, TargetP
 
 from trading_strategies.technical_indicators import MACD_adj
 
-ls_symbols = ['SHFE.rb1905', 'SHFE.hc1905']#, 'CZCE.MA909', 'CZCE.TA909']
+ls_symbols = ['SHFE.rb1910', 'SHFE.hc1910', 'DCE.i1909' 'CZCE.MA909', 'CZCE.TA909']
 # SYMBOL = "DCE.i1905"  # 合约代码
-# api = TqApi(TqSim())
-api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,1,10)))
+api = TqApi('SIM')
+# api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,1,10)))
 
 dict_quotes = {}
 dict_klines = {}
@@ -111,3 +111,6 @@ with closing(api):
     except BacktestFinished:
         print('----回测结束----')
 
+# with closing(api):
+#     while True:
+#         api.wait_update()
