@@ -46,34 +46,35 @@ async def signal_generator(SYMBOL, strategy):
     while True:
         target_pos_value = 0
         async for _ in update_kline_chan:
-            pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
-            k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=14, seconds=59))
-            # print(SYMBOL, '信号时间', k15)
+            if api.is_changing(klines[-1], 'datetime'):
+                pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
+                k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=14, seconds=59))
+                print(SYMBOL, '信号时间', k15, '当前持仓', pos_value)
 
-            ys = pd.Series(data=klines.close[-100:-1],
-                           index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
-                           )
-            dict_results = strategy(ys)
+                ys = pd.Series(data=klines.close[-100:-1],
+                               index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
+                               )
+                dict_results = strategy(ys)
 
-            if pos_value == 0 and dict_results['signal'][-1] == 1:
-                # 上涨阶段金叉 做多
-                target_pos_value = 5
-                print(SYMBOL, "上涨阶段做多", '时间：', k15)
-                break
+                if pos_value == 0 and dict_results['signal'][-1] == 1:
+                    # 上涨阶段金叉 做多
+                    target_pos_value = 5
+                    print(SYMBOL, "上涨阶段做多", '时间：', k15)
+                    break
 
-            if pos_value == 0 and dict_results['signal'][-1] == -1:
-                # 下跌阶段死叉，做空
-                target_pos_value = -5
-                print(SYMBOL, "下跌阶段做空", '时间：', k15)
-                break
+                if pos_value == 0 and dict_results['signal'][-1] == -1:
+                    # 下跌阶段死叉，做空
+                    target_pos_value = -5
+                    print(SYMBOL, "下跌阶段做空", '时间：', k15)
+                    break
 
-            if (pos_value > 0 and dict_results['HIST'][-2] > 0 and
-                (dict_results['HIST'][-1] < dict_results['HIST'][-2])) or \
-                    (pos_value < 0 and dict_results['HIST'][-2] < 0 and
-                     (dict_results['HIST'][-1] > dict_results['HIST'][-2])):
-                target_pos_value = 0
-                print(SYMBOL, '止损平仓', '时间：', k15)
-                break
+                if (pos_value > 0 and dict_results['HIST'][-2] > 0 and
+                    (dict_results['HIST'][-1] < dict_results['HIST'][-2])) or \
+                        (pos_value < 0 and dict_results['HIST'][-2] < 0 and
+                         (dict_results['HIST'][-1] > dict_results['HIST'][-2])):
+                    target_pos_value = 0
+                    print(SYMBOL, '止损平仓', '时间：', k15)
+                    break
         target_pos.set_target_volume(target_pos_value)
 
     await update_kline_chan.close()
