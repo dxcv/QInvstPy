@@ -16,8 +16,7 @@ from tqsdk import TqApi, TqSim, TqAccount, TqBacktest, BacktestFinished, TargetP
 
 from trading_strategies.technical_indicators import MACD_adj
 
-ls_symbols = ['SHFE.rb1910', 'SHFE.hc1910', 'DCE.i1909' 'CZCE.MA909', 'CZCE.TA909']
-# SYMBOL = "DCE.i1905"  # 合约代码
+ls_symbols = ['SHFE.rb1910', 'SHFE.hc1910', 'CZCE.MA909', 'CZCE.TA909', 'DCE.i1909']
 api = TqApi('SIM')
 # api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,1,10)))
 
@@ -49,7 +48,7 @@ async def signal_generator(SYMBOL, strategy):
         async for _ in update_kline_chan:
             pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
             k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=14, seconds=59))
-            print(SYMBOL, '信号时间', k15)
+            # print(SYMBOL, '信号时间', k15)
 
             ys = pd.Series(data=klines.close[-100:-1],
                            index=[str(dt.datetime.fromtimestamp(i / 1e9)) for i in klines.datetime[-100:-1]]
@@ -104,13 +103,14 @@ for symbol in ls_symbols:
     api.create_task(signal_generator(symbol, MACD_adj))
     api.create_task(close_win(symbol))
 
-with closing(api):
-    try:
-        while True:
-            api.wait_update()
-    except BacktestFinished:
-        print('----回测结束----')
-
 # with closing(api):
-#     while True:
-#         api.wait_update()
+#     try:
+#         while True:
+#             api.wait_update()
+#     except BacktestFinished:
+#         print('----回测结束----')
+
+
+with closing(api):
+    while True:
+        api.wait_update()
