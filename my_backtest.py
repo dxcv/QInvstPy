@@ -57,7 +57,7 @@ duration_seconds = 5 * 60
 # backtest period
 start_date = dt.date(2018, 7, 2)
 end_date = dt.date(2018, 7, 26)
-
+# aware of some special cases, say 20161111
 
 ######################################################################
 # 策略编写与导入
@@ -121,7 +121,7 @@ bootstrap = BootstrapAssessment(symbol='SHFE.rb1905',
 ######################################################################
 from my_TqBacktest import TianqinBacktesing
 # TqBacktest
-symbol = 'SHFE.rb1810'
+symbol = 'SHFE.rb1910'
 TianqinBacktesing()
 
 # Construct live_monitoring
@@ -131,41 +131,5 @@ construct tianqinbacktest
 construct tianqin real-time monitoring
 real-time trading
 """
-
-if __name__ == '__main__':
-    from trading_strategies.technical_indicators import SMA
-
-    symbol = 'SHFE.rb1905'
-    duration_seconds = 10
-    # api = TqApi('SIM', url='ws://192.168.1.6:7777', backtest=TqBacktest(start_dt=dt.date(2019,2,13), end_dt=dt.date(2019,2,14)))
-    api = TqApi('SIM')#, backtest=TqBacktest(start_dt=dt.date(2019, 2, 13), end_dt=dt.date(2019, 2, 14)))
-    quote = api.get_quote(symbol)
-    klines = api.get_kline_serial(symbol, duration_seconds=duration_seconds)  #
-    target_pos = TargetPosTask(api, symbol)
-
-    with closing(api):
-        try:
-            while True:
-                api.wait_update()
-                if api.is_changing(klines):
-                    try:
-                        now = dt.datetime.strptime(quote["datetime"], "%Y-%m-%d %H:%M:%S.%f")  # 当前quote的时间
-                    except:
-                        now = 'No data'
-                    print(now)
-                    ys = pd.Series(data=klines.close[-50:],
-                                   index=[dt.datetime.fromtimestamp(i/1e9) for i in klines.datetime[-50:]]
-                                   )
-                    if SMA(ys, 20) == 1:  # 如果预测结果为涨: 买入
-                        print(quote["datetime"], "预测下一交易日为 涨")
-                        target_pos.set_target_volume(1)
-                    elif SMA(ys, 20) == -1:
-                        print(quote["datetime"], "预测下一交易日为 跌")
-                        target_pos.set_target_volume(-1)
-                    else:
-                        print(quote["datetime"], "meiyoufangxiang pingcang")
-                        target_pos.set_target_volume(0)
-        except BacktestFinished:  # 回测结束, 获取预测结果，统计正确率
-            print("----回测结束----")
 
 
