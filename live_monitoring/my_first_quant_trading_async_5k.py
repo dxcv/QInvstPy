@@ -16,8 +16,8 @@ from tqsdk import TqApi, TqSim, TqAccount, TqBacktest, BacktestFinished, TargetP
 
 from trading_strategies.technical_indicators import MACD_adj
 
-ls_symbols = ['SHFE.rb1910', 'SHFE.hc1910', 'CZCE.MA909', 'CZCE.TA909', 'DCE.i1909']
-# ls_symbols = ['SHFE.fu1909', 'SHFE.bu1912', 'DCE.jd1909']
+# ls_symbols = ['SHFE.rb1910', 'SHFE.hc1910', 'CZCE.MA909', 'CZCE.TA909', 'DCE.i1909']
+ls_symbols = ['SHFE.fu1909', 'SHFE.bu1912', 'DCE.jd1909']
 api = TqApi('SIM')
 # api = TqApi(TqSim(), backtest=TqBacktest(start_dt=dt.date(2019,1,2), end_dt=dt.date(2019,1,10)))
 
@@ -49,7 +49,7 @@ async def signal_generator(SYMBOL, strategy):
         async for _ in update_kline_chan:
             if api.is_changing(klines[-1], 'datetime'):
                 pos_value = position["volume_long"] - position["volume_short"]  # 净目标净持仓数
-                k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=14, seconds=59))
+                k15 = str(dt.datetime.fromtimestamp(klines.datetime[-2] / 1e9) + pd.Timedelta(minutes=4, seconds=59))
                 print(SYMBOL, '信号时间', k15, '当前持仓', pos_value)
 
                 ys = pd.Series(data=klines.close[-100:-1],
