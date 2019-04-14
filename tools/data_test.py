@@ -22,9 +22,9 @@ download_tasks = {}
 #                                               start_dt=date(2018, 1, 1), end_dt=date(2019, 1, 1),
 #                                               csv_file_name="rb_i_2h.csv")
 # 下载从 2019-01-01 到 2019-02-24 的 IF1903 1min数据
-download_tasks["IF1903_1min"] = DataDownloader(api, symbol_list="CFFEX.IF1903", dur_sec=60,
-                                               start_dt=datetime(2019, 3, 13), end_dt=datetime(2019, 3, 14),
-                                               csv_file_name="IF1903_1min.csv")
+download_tasks["IF1904_1min"] = DataDownloader(api, symbol_list="CFFEX.IF1904", dur_sec=60,
+                                               start_dt=datetime(2019, 3, 13), end_dt=datetime(2019, 3, 26),
+                                               csv_file_name="IF1904_1min.csv")
 # 使用with closing机制确保下载完成后释放对应的资源
 with closing(api):
     while not all([v.is_finished() for v in download_tasks.values()]):
