@@ -30,7 +30,7 @@ dict_update_quote_chan = {}
 
 for SYMBOL in ls_symbols:
     dict_quotes[SYMBOL] = api.get_quote(SYMBOL)  # 行情数据
-    dict_klines[SYMBOL] = api.get_kline_serial(SYMBOL, duration_seconds=5 * 60)
+    dict_klines[SYMBOL] = api.get_kline_serial(SYMBOL, duration_seconds=15 * 60)
     dict_positions[SYMBOL] = api.get_position(SYMBOL)
     dict_target_pos[SYMBOL] = TargetPosTask(api, SYMBOL)
     dict_update_kline_chan[SYMBOL] = api.register_update_notify(dict_klines[SYMBOL])

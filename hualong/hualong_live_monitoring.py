@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 from tqsdk import TqApi
 
-# from technical_indicators import SMA
-from trading_strategies.technical_indicators import SMA
+from technical_indicators import SMA
+# from trading_strategies.technical_indicators import SMA
 
 # import seaborn as sns
 # sns.set_style('white')
@@ -136,7 +136,7 @@ def wave_rule(dict_results, Y=0.0025, Z=0.015):
     else:
         signal = 0
 
-    return signal, stop_loss, target_price
+    return Wave_up, Wave_down, signal, stop_loss, target_price
 
 
 with closing(api):
@@ -147,18 +147,18 @@ with closing(api):
             # 注意引用k线的时间是k线的起始时间
             k_time = dt.datetime.fromtimestamp(klines[-2]["datetime"]/1e9)
             dict_results = wave(klines, w=3, X=20)
-            signal, stop_loss, target_price = wave_rule(dict_results)
+            Wave_up, Wave_down, signal, stop_loss, target_price = wave_rule(dict_results)
             print(k_time)
             if signal == 1:
                 print('开仓多头')
                 print("判断信号K线时间", k_time)
-                print(dict_results['Up'])
+                print(Wave_up)
                 print('price target: ', target_price)
                 print('stop loss: ', stop_loss)
             elif signal == -1:
                 print('开仓空头')
                 print("判断信号K线时间", k_time)
-                print(dict_results['Down'])
+                print(Wave_down)
                 print('price target: ', target_price)
                 print('stop loss: ', stop_loss)
 
